@@ -60,7 +60,7 @@ binding = "AI"
 
 ```bash
 # 컨테이너 내부 터미널
-npx wrangler vectorize create "your_email" --dimensions=768 --metric=cosine
+npx wrangler vectorize create "이메일 앞 부분" --dimensions=768 --metric=cosine
 ```
 
 > `주의 사항`
@@ -72,7 +72,7 @@ npx wrangler vectorize create "your_email" --dimensions=768 --metric=cosine
 ```toml
 [[vectorize]]
 binding = "VECTORIZE_INDEX"
-index_name = "your_email"
+index_name = "이메일 앞 부분"
 ```
 
 ### 9. cloudflare SQL db 생성
@@ -81,7 +81,7 @@ index_name = "your_email"
 
 ```bash
 # 컨테이너 내부 터미널
-npx wrangler d1 create "your_email"
+npx wrangler d1 create "이메일 앞 부분"
 ```
 
 ### 10. `wrangler.toml` 파일을 열어서 아래 내용 추가
@@ -89,7 +89,7 @@ npx wrangler d1 create "your_email"
 ```toml
 [[d1_databases]]
 binding = "DB"
-database_name = "your_email"
+database_name = "이메일 앞 부분"
 database_id = "터미널에서 출력된 database_id 값"
 ```
 
