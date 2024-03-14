@@ -60,7 +60,7 @@ binding = "AI"
 
 ```bash
 # 컨테이너 내부 터미널
-npx wrangler vectorize create "test" --dimensions=768 --metric=cosine
+npx wrangler vectorize create "your_email" --dimensions=768 --metric=cosine
 ```
 
 > `주의 사항`
