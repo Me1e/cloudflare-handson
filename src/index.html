@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Enhanced Apple Style Note and Query App</title>
+		<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+	</head>
+	<body class="bg-gray-50 text-gray-800">
+		<div class="min-h-screen flex flex-col items-center justify-center">
+			<!-- Add Note Form -->
+			<div class="bg-white bg-opacity-80 backdrop-blur-md p-6 rounded-lg shadow-lg max-w-lg w-full my-4">
+				<h1 class="text-2xl font-bold mb-4">Add a Note</h1>
+				<textarea
+					id="noteText"
+					placeholder="Enter your note here..."
+					class="bg-gray-100 bg-opacity-50 rounded-md w-full p-4 text-gray-900 mb-4"
+					rows="3"
+				></textarea>
+				<button
+					onclick="submitNote()"
+					class="w-full py-2 rounded-md bg-blue-500 text-white font-bold hover:bg-blue-600 transition duration-200"
+				>
+					Submit Note
+				</button>
+			</div>
+
+			<!-- Query Form -->
+			<div class="bg-white bg-opacity-80 backdrop-blur-md p-6 rounded-lg shadow-lg max-w-lg w-full my-4">
+				<h1 class="text-2xl font-bold mb-4">Query the Database</h1>
+				<input
+					type="text"
+					id="queryText"
+					placeholder="Enter your query..."
+					class="bg-gray-100 bg-opacity-50 rounded-md w-full p-4 text-gray-900 mb-4"
+				/>
+				<button
+					onclick="getAnswer()"
+					class="w-full py-2 rounded-md bg-blue-500 text-white font-bold hover:bg-blue-600 transition duration-200"
+				>
+					Get Answer
+				</button>
+			</div>
+
+			<!-- LLM Response -->
+			<div id="llmResponse" class="bg-white bg-opacity-80 backdrop-blur-md p-6 rounded-lg shadow-lg max-w-lg w-full my-4">
+				<h2 class="text-xl font-bold mb-4">Answer</h2>
+				<p id="llmAnswer">Your answer will appear here...</p>
+			</div>
+		</div>
+
+		<script>
+			async function submitNote() {
+				const noteContent = document.getElementById('noteText').value;
+				const response = await fetch('/notes', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify({ text: noteContent }),
+				});
+
+				if (response.ok) {
+					alert('Note added successfully!');
+					document.getElementById('noteText').value = ''; // Clear the textarea
+				} else {
+					alert('Failed to add note.');
+				}
+			}
+
+			function getAnswer() {
+				const queryText = document.getElementById('queryText').value;
+				const encodedQuery = encodeURIComponent(queryText);
+				const source = new EventSource(`/?text=${encodedQuery}`);
+
+				source.onmessage = (event) => {
+					if (event.data == '[DONE]') {
+						source.close(); // 연결을 명시적으로 닫습니다.
+						return;
+					}
+
+					const data = JSON.parse(event.data);
+					const llmAnswerElement = document.getElementById('llmAnswer');
+					llmAnswerElement.textContent += data.response; // 서버로부터 받은 응답을 표시합니다.
+				};
+			}
+		</script>
+	</body>
+</html>

@@ -15,6 +15,8 @@ docker run -it --name cf -p 3001:3001 -v "$(pwd):/app" -w /app node:20 bash
 >
 > 내 컴퓨터가 3001번 포트를 사용하고 있으면 안됩니다.
 
+이후 해당 컨테이너에 접근하려면 `docker exec -it cf bash`를 이용합니다.
+
 ### 3. 프로젝트 파일을 git으로 가져옴
 
 ```bash
