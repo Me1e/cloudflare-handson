@@ -56,11 +56,11 @@ binding = "AI"
 
 ### 7. cloudflare vector db 생성
 
-> 다른 실습 인원과 중복되지 않도록 db 이름은 본인 이메일 앞 부분으로 하기
+> 다른 실습 인원과 중복되지 않도록 db 이름(현재 `your_email`로 표시됨)은 본인 이메일 앞 부분으로 하기
 
 ```bash
 # 컨테이너 내부 터미널
-npx wrangler vectorize create "이메일 앞 부분" --dimensions=768 --metric=cosine
+npx wrangler vectorize create "test" --dimensions=768 --metric=cosine
 ```
 
 > `주의 사항`
@@ -72,16 +72,16 @@ npx wrangler vectorize create "이메일 앞 부분" --dimensions=768 --metric=c
 ```toml
 [[vectorize]]
 binding = "VECTORIZE_INDEX"
-index_name = "이메일 앞 부분"
+index_name = "your_email"
 ```
 
 ### 9. cloudflare SQL db 생성
 
-> 다른 실습 인원과 중복되지 않도록 db 이름은 본인 이메일 앞 부분으로 하기
+> 다른 실습 인원과 중복되지 않도록 db 이름(현재 `your_email`로 표시됨)은 본인 이메일 앞 부분으로 하기
 
 ```bash
 # 컨테이너 내부 터미널
-npx wrangler d1 create "이메일 앞 부분"
+npx wrangler d1 create "your_email"
 ```
 
 ### 10. `wrangler.toml` 파일을 열어서 아래 내용 추가
@@ -89,7 +89,7 @@ npx wrangler d1 create "이메일 앞 부분"
 ```toml
 [[d1_databases]]
 binding = "DB"
-database_name = "이메일 앞 부분"
+database_name = "your_email"
 database_id = "터미널에서 출력된 database_id 값"
 ```
 
