@@ -45,14 +45,20 @@ npm install
 
 ## 6. `wrangler.toml` 파일을 열어서 아래 내용 추가
 
+> 다른 실습 인원과 중복되지 않도록 name은 본인 이메일 앞 부분으로 하기
+
 ```toml
+name = ""
+main = "src/index.js"
+compatibility_date = "2024-03-16"
+
 [ai]
 binding = "AI"
 ```
 
 ## 7. cloudflare vector db 생성
 
-> 다른 실습 인원과 중복되지 않도록 db 이름은 본인 이메일 앞 부분으로 하기
+> 다른 실습 인원과 중복되지 않도록 vector db 이름은 본인 이메일 앞 부분으로 하기
 
 ```bash
 # 컨테이너 내부 터미널
