@@ -107,7 +107,7 @@ npx wrangler d1 execute "" --remote --command "CREATE TABLE IF NOT EXISTS notes 
 npx wrangler dev --remote --port=3001 --ip=0.0.0.0
 ```
 
-"http://0.0.0.0:3001/home"으로 접속하여 테스트합니다.
+"http://0.0.0.0:3001/home" 으로 접속하여 테스트합니다.
 
 ## 13. 배포
 
