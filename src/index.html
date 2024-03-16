@@ -1,89 +1,115 @@
 <!DOCTYPE html>
-<html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Enhanced Apple Style Note and Query App</title>
-		<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
-	</head>
-	<body class="bg-gray-50 text-gray-800">
-		<div class="min-h-screen flex flex-col items-center justify-center">
-			<!-- Add Note Form -->
-			<div class="bg-white bg-opacity-80 backdrop-blur-md p-6 rounded-lg shadow-lg max-w-lg w-full my-4">
-				<h1 class="text-2xl font-bold mb-4">Add a Note</h1>
-				<textarea
-					id="noteText"
-					placeholder="Enter your note here..."
-					class="bg-gray-100 bg-opacity-50 rounded-md w-full p-4 text-gray-900 mb-4"
-					rows="3"
-				></textarea>
-				<button
-					onclick="submitNote()"
-					class="w-full py-2 rounded-md bg-blue-500 text-white font-bold hover:bg-blue-600 transition duration-200"
-				>
-					Submit Note
-				</button>
-			</div>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cloudflare RAG AI</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-gray-50 text-gray-800">
+    <div class="min-h-screen flex flex-col items-center justify-center">
+      <!-- Add Note Form -->
+      <div
+        class="bg-white bg-opacity-80 backdrop-blur-md p-6 rounded-lg shadow-lg max-w-lg w-full my-4"
+      >
+        <h1 class="text-2xl font-bold mb-4">데이터 추가</h1>
+        <textarea
+          id="noteText"
+          placeholder="Enter your note here..."
+          class="bg-gray-100 bg-opacity-50 rounded-md w-full p-4 text-gray-900 mb-4"
+          rows="3"
+        ></textarea>
+        <button
+          id="submitNoteButton"
+          onclick="submitNote()"
+          class="w-full py-2 rounded-md bg-blue-500 text-white font-bold hover:bg-blue-600 transition duration-200"
+        >
+          제출
+        </button>
+      </div>
 
-			<!-- Query Form -->
-			<div class="bg-white bg-opacity-80 backdrop-blur-md p-6 rounded-lg shadow-lg max-w-lg w-full my-4">
-				<h1 class="text-2xl font-bold mb-4">Query the Database</h1>
-				<input
-					type="text"
-					id="queryText"
-					placeholder="Enter your query..."
-					class="bg-gray-100 bg-opacity-50 rounded-md w-full p-4 text-gray-900 mb-4"
-				/>
-				<button
-					onclick="getAnswer()"
-					class="w-full py-2 rounded-md bg-blue-500 text-white font-bold hover:bg-blue-600 transition duration-200"
-				>
-					Get Answer
-				</button>
-			</div>
+      <!-- Query Form -->
+      <div
+        class="bg-white bg-opacity-80 backdrop-blur-md p-6 rounded-lg shadow-lg max-w-lg w-full my-4"
+      >
+        <h1 class="text-2xl font-bold mb-4">데이터 검색</h1>
+        <input
+          type="text"
+          id="queryText"
+          placeholder="Enter your query..."
+          class="bg-gray-100 bg-opacity-50 rounded-md w-full p-4 text-gray-900 mb-4"
+        />
+        <button
+          id="getAnswerButton"
+          onclick="getAnswer()"
+          class="w-full py-2 rounded-md bg-blue-500 text-white font-bold hover:bg-blue-600 transition duration-200"
+        >
+          검색
+        </button>
+      </div>
 
-			<!-- LLM Response -->
-			<div id="llmResponse" class="bg-white bg-opacity-80 backdrop-blur-md p-6 rounded-lg shadow-lg max-w-lg w-full my-4">
-				<h2 class="text-xl font-bold mb-4">Answer</h2>
-				<p id="llmAnswer">Your answer will appear here...</p>
-			</div>
-		</div>
+      <!-- LLM Response -->
+      <div
+        id="llmResponse"
+        class="bg-white bg-opacity-80 backdrop-blur-md p-6 rounded-lg shadow-lg max-w-lg w-full my-4"
+      >
+        <h2 class="text-xl font-bold mb-4">답변</h2>
+        <p id="llmAnswer"></p>
+      </div>
+    </div>
 
-		<script>
-			async function submitNote() {
-				const noteContent = document.getElementById('noteText').value;
-				const response = await fetch('/notes', {
-					method: 'POST',
-					headers: {
-						'Content-Type': 'application/json',
-					},
-					body: JSON.stringify({ text: noteContent }),
-				});
+    <script>
+      async function submitNote() {
+        const submitButton = document.getElementById('submitNoteButton');
+        submitButton.disabled = true; // 비활성화
+        submitButton.classList.add('opacity-50', 'cursor-not-allowed');
 
-				if (response.ok) {
-					alert('Note added successfully!');
-					document.getElementById('noteText').value = ''; // Clear the textarea
-				} else {
-					alert('Failed to add note.');
-				}
-			}
+        const noteContent = document.getElementById('noteText').value;
+        const response = await fetch('/notes', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ text: noteContent }),
+        });
 
-			function getAnswer() {
-				const queryText = document.getElementById('queryText').value;
-				const encodedQuery = encodeURIComponent(queryText);
-				const source = new EventSource(`/?text=${encodedQuery}`);
+        if (response.ok) {
+          alert('추가되었습니다.');
+          document.getElementById('noteText').value = ''; // Clear the textarea
+        } else {
+          alert('추가에 실패했습니다.');
+        }
 
-				source.onmessage = (event) => {
-					if (event.data == '[DONE]') {
-						source.close(); // 연결을 명시적으로 닫습니다.
-						return;
-					}
+        submitButton.disabled = false; // 다시 활성화
+        submitButton.classList.remove('opacity-50', 'cursor-not-allowed');
+      }
 
-					const data = JSON.parse(event.data);
-					const llmAnswerElement = document.getElementById('llmAnswer');
-					llmAnswerElement.textContent += data.response; // 서버로부터 받은 응답을 표시합니다.
-				};
-			}
-		</script>
-	</body>
+      function getAnswer() {
+        const answerButton = document.getElementById('getAnswerButton');
+        answerButton.disabled = true; // 비활성화
+        answerButton.classList.add('opacity-50', 'cursor-not-allowed');
+
+        const queryText = document.getElementById('queryText').value;
+        const encodedQuery = encodeURIComponent(queryText);
+        const source = new EventSource(`/?text=${encodedQuery}`);
+        const llmAnswerElement = document.getElementById('llmAnswer');
+        llmAnswerElement.textContent = '';
+
+        source.onmessage = (event) => {
+          if (event.data == '[DONE]') {
+            source.close(); // 연결을 명시적으로 닫습니다.
+            answerButton.disabled = false; // 다시 활성화
+            answerButton.classList.remove('opacity-50', 'cursor-not-allowed');
+            return;
+          }
+
+          const data = JSON.parse(event.data);
+          llmAnswerElement.textContent += data.response; // 서버로부터 받은 응답을 표시합니다.
+        };
+      }
+    </script>
+  </body>
 </html>
