@@ -106,10 +106,10 @@ npx wrangler deploy
 그 주소에 `/home`을 붙여 접속하면 데모를 확인할 수 있습니다.  
 ex. https://cloudflare-handson.mele0404.workers.dev/home
 
-1. Add a Note로 AI에게 지식을 알려줍니다.  
+1. "데이터 추가"로 AI에게 지식을 알려줍니다.  
    ex. "클라우드 클럽은 천재들이 모인 동아리이다."
 
-2. Query the Database로 AI에게 질문을 합니다.  
+2. "데이터 검색"으로 AI에게 질문을 합니다.  
    ex. "클라우드 클럽은 무엇인가요?"
 
-3. Answer를 확인합니다.
+3. "답변"을 확인합니다.
