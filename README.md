@@ -100,6 +100,15 @@ database_id = ""
 npx wrangler d1 execute "" --remote --command "CREATE TABLE IF NOT EXISTS notes (id INTEGER PRIMARY KEY, text TEXT NOT NULL)"
 ```
 
+## 12. 로컬에서 테스트
+
+```bash
+# 컨테이너 내부 터미널
+npx wrangler dev --remote --port=3001 --ip=0.0.0.0
+```
+
+"0.0.0.0:3001/home"으로 접속하여 테스트합니다.
+
 ## 12. 배포
 
 ```bash
