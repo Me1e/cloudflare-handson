@@ -84,14 +84,14 @@ npx wrangler d1 create ""
 
 ## 10. `wrangler.toml` 파일을 열어서 아래 내용 추가
 
+> database_id는 터미널에 출력된 id를 사용합니다.
+
 ```toml
 [[d1_databases]]
 binding = "DB"
 database_name = ""
 database_id = ""
 ```
-
-> database_id는 터미널에 출력된 id를 사용합니다.
 
 ## 11. cloudflare SQL db에 테이블 생성
 
